@@ -4,8 +4,9 @@ import { getDocs } from '../lib/docs';
 import '../styles/global.css';
 
 const docs = await getDocs();
-const currentSlug = Astro.url.pathname.split('/').pop() || '';
-const base = Astro.site?.pathname || '/adamosophy/';
+const pathSegments = Astro.url.pathname.split('/').filter(Boolean);
+const currentSlug = pathSegments[pathSegments.length - 1] || '';
+const base = Astro.site?.pathname?.replace(/\/$/, '') || '';
 ---
 
 <!doctype html>
