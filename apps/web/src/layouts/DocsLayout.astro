@@ -1,6 +1,7 @@
 ---
 import TopNav from '../components/TopNav.astro';
 import { getDocs } from '../lib/docs';
+import '../styles/global.css';
 
 const docs = await getDocs();
 const currentSlug = Astro.url.pathname.split('/').pop() || '';
@@ -18,9 +19,9 @@ const currentSlug = Astro.url.pathname.split('/').pop() || '';
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   </head>
   <body>
-    <TopNav />
-
-    <div class="layout">
+    <div class="app-grid">
+      <TopNav />
+      
       <aside class="sidebar">
         <nav>
           <ul>
@@ -38,42 +39,26 @@ const currentSlug = Astro.url.pathname.split('/').pop() || '';
         </nav>
       </aside>
 
-      <main class="content">
+      <main class="main-content">
         <slot />
       </main>
+      
+      <footer class="footer">
+        <p>&copy; 2025 Adamosophy. All rights reserved.</p>
+      </footer>
     </div>
   </body>
 </html>
 
 <style>
-  :global(*) {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  :global(body) {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    color: #424242;
-    background: #fafafa;
-    line-height: 1.6;
-  }
-
-  .layout {
-    display: flex;
-    min-height: 100vh;
-    padding-top: 64px;
-  }
-
   .sidebar {
-    width: 280px;
-    background: #f5f5f5;
-    border-right: 1px solid #e0e0e0;
-    padding: 1.5rem;
-    position: fixed;
-    top: 64px;
-    left: 0;
-    bottom: 0;
+    grid-area: sidebar;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: var(--grid-gap);
+    padding: var(--grid-gap-lg);
+    background-color: var(--color-bg-secondary);
+    border-right: 1px solid var(--color-border);
     overflow-y: auto;
   }
 
@@ -82,40 +67,46 @@ const currentSlug = Astro.url.pathname.split('/').pop() || '';
   }
 
   .sidebar nav li {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0;
   }
 
   .sidebar nav a {
-    display: block;
-    padding: 0.75rem 1rem;
-    color: #424242;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    color: var(--color-text-secondary);
     text-decoration: none;
-    border-radius: 6px;
-    transition: background-color 0.2s;
+    border-radius: 0.375rem;
+    transition: all 0.2s ease;
   }
 
   .sidebar nav a:hover {
-    background: #e8e8e8;
+    color: var(--color-primary);
+    background-color: var(--color-bg);
   }
 
   .sidebar nav a.active {
-    background: #1976d2;
-    color: white;
-    font-weight: 500;
+    color: var(--color-primary);
+    font-weight: 600;
+    background-color: var(--color-bg);
   }
 
-  .content {
-    flex: 1;
-    margin-left: 280px;
-    padding: 2rem 3rem;
-    max-width: 100%;
-    overflow-x: hidden;
-  }
+  @media (max-width: 768px) {
+    .sidebar {
+      display: none;
+    }
 
-  @media (max-width: 1023px) {
-    .content {
-      margin-left: 0;
-      padding: 1.5rem;
+    .sidebar.open {
+      display: grid;
+      position: fixed;
+      top: var(--header-height);
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 99;
+      background-color: var(--color-bg-secondary);
     }
   }
 </style>
