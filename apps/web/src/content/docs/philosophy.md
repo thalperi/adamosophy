@@ -1,3 +1,9 @@
+---
+title: 'Adamosophy Philosophy'
+description: 'The philosophy of synergistic autonomy and the four pillars of the Adamosophy ecosystem'
+sidebarOrder: 2
+---
+
 # Adamosophy Philosophy
 
 ## The Architecture of Synergistic Autonomy

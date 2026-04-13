@@ -1,3 +1,9 @@
+---
+title: 'Adamosophy Vision'
+description: 'The vision and mission of Adamosophy - a showroom of applications designed for humanity'
+sidebarOrder: 1
+---
+
 # Adamosophy Vision
 
 ## What is Adamosophy?

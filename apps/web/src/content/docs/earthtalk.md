@@ -1,3 +1,9 @@
+---
+title: 'Earthtalk Proposal'
+description: 'Architectural blueprint and vision for Earthtalk, a local-first P2P social publishing platform'
+sidebarOrder: 3
+---
+
 ## **Earthtalk Proposal**
 
 This document serves as the formal architectural blueprint and vision for a local-first, P2P social publishing platform. It synthesizes our technical decisions into a cohesive strategy for a node that is "free" (autonomous) and "connectable" (resilient), structured here for architectural evaluation and adoption.
