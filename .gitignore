@@ -1,4 +1,85 @@
 ```
-# Build artifacts
+# Build outputs
 dist/
+build/
+target/
+
+# Dependencies
+node_modules/
+vendor/
+packages/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+.ENV
+.venv.bak/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.pytest_cache/
+.mypy_cache/
+.pyre/
+.pytype/
+celerybeat-schedule
+celerybeat.pid
+
+# Compiled and binary files
+*.o
+*.obj
+*.out
+*.dll
+*.so
+*.dylib
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Environment specific
+.env
+.env.local
+*.env
+.env.*
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Testing
+coverage/
+htmlcov/
+.nyc_output
+istanbul.out
+coverage-final.json
+
+# OS generated
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 ```
