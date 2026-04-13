@@ -1,3 +1,9 @@
+---
+title: 'Adamosophy Design Guide'
+description: 'Design philosophy, implementation status, and future plans for Adamosophy'
+sidebarOrder: 4
+---
+
 # Adamosophy Design Guide
 
 ## Overview
