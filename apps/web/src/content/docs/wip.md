@@ -22,6 +22,12 @@ This document tracks the current state of development for the Adamosophy documen
 - [x] Create UI architecture documentation (ui.md) inspired by Couchers.org
 - [ ] Implement GitHub integration for actual file updates
 - [ ] Add image upload and optimization logic
+- [ ] Fix MD viewer nested list indentation (all list items appear left-aligned instead of hierarchically indented)
+
+### 2026-01-14: MD Viewer Indentation Issue
+**Problem**: Nested lists in markdown documents aren't showing proper hierarchical indentation. All list items (bulleted or numbered) inside documents appear completely left-aligned instead of being indented according to their nesting level.
+**Root Cause**: CSS applies the same padding to all list levels rather than incrementally increasing indentation for each nesting level.
+**Status**: Pending fix to CSS for nested list styling.
 
 ## Roadmap
 
@@ -65,4 +71,4 @@ The following features are currently being implemented to enhance the documentat
 
 ---
 
-*Last Updated: Session including resizable sidebar, card/list toggle, UI documentation, and build fixes.*
+*Last Updated: 2026-01-14 - Session including resizable sidebar, card/list toggle, UI documentation, build fixes, and MD viewer nested list indentation issue documented.*

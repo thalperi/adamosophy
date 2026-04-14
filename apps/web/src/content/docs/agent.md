@@ -10,6 +10,16 @@ description: 'Operational constraints, GitHub interaction protocols, and a log o
 *   **No Unauthorized Coding**: Do not code or modify anything without **explicit instruction** and **permission** from the user.
 *   **Verification First**: Before acting, always verify the current state of the workspace (file existence, content, build status). Never assume prior steps were completed correctly due to potential context loss.
 *   **Documentation Review**: Always review `wip.md` and other project definition documents before starting work to understand the current project state.
+*   **WIP.md Workflow**: For every task:
+    1.  Read `wip.md` first to understand current priorities and status
+    2.  Update `wip.md` with new task information, including a timestamped entry (format: YYYY-MM-DD)
+    3.  Complete the task as instructed
+    4.  Report back to the user with results (findings or completion status)
+    5.  Ask for explicit permission to commit and push changes (user needs to test the live project)
+    6.  After receiving permission, commit and push the changes
+    7.  Monitor the triggered build and verify it completes successfully
+    8.  Only after successful build completion, return to the user to ask for permission to check off the task in `wip.md`
+    9.  Ensure all updates include timestamps going forward
 
 ## 2. GitHub Interaction Protocols
 
