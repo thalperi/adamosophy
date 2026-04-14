@@ -1,6 +1,6 @@
 ---
 // API endpoint to upload and optimize images
-import type { APIRoute } from 'astro';
+import { APIRoute } from 'astro';
 
 export const POST: APIRoute = async ({ request }) => {
   try {
