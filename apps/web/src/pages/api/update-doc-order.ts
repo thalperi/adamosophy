@@ -1,4 +1,3 @@
----
 // API endpoint to update document order
 import { APIRoute } from 'astro';
 

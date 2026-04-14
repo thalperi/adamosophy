@@ -1,4 +1,3 @@
----
 // API endpoint to upload and optimize images
 import { APIRoute } from 'astro';
 

@@ -1,4 +1,3 @@
----
 // API endpoint to update document metadata
 import { APIRoute } from 'astro';
 
