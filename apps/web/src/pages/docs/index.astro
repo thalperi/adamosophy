@@ -1,0 +1,80 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+import { getDocs } from '../../lib/docs';
+
+const docs = await getDocs();
+---
+
+<DocsLayout title="Documentation | Adamosophy">
+  <div class="docs-landing">
+    <h1>Documentation</h1>
+    <p class="intro">Explore our collection of documents and guides.</p>
+    
+    <div class="docs-grid">
+      {docs.map((doc) => (
+        <a href={`/adamosophy/docs/${doc.id.replace('.md', '')}`} class="doc-card">
+          <div class="card-content">
+            <h2>{doc.data.title}</h2>
+            {doc.data.description && <p>{doc.data.description}</p>}
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</DocsLayout>
+
+<style>
+  .docs-landing {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .docs-landing h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+  }
+  
+  .intro {
+    font-size: 1.125rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 2rem;
+  }
+  
+  .docs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--space-lg);
+  }
+  
+  .doc-card {
+    display: block;
+    padding: var(--space-lg);
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+  }
+  
+  .doc-card:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transform: translateY(-2px);
+  }
+  
+  .card-content h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: var(--space-sm);
+  }
+  
+  .card-content p {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+</style>
