@@ -1,6 +1,7 @@
 ---
 import DocsLayout from '../../layouts/DocsLayout.astro';
 import { getDocs } from '../../lib/docs';
+import { Content } from 'astro:content';
 
 export async function getStaticPaths() {
   const docs = await getDocs();
@@ -11,13 +12,12 @@ export async function getStaticPaths() {
 }
 
 const { doc } = Astro.props;
-const Content = doc.Content;
 ---
 
 <DocsLayout title={`${doc.data.title} | Adamosophy`}>
   <article class="doc-content">
     <h1>{doc.data.title}</h1>
-    <Content />
+    <Content entry={doc} />
   </article>
 </DocsLayout>
 
