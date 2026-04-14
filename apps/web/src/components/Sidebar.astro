@@ -11,22 +11,271 @@ const docItems = await getDocs();
 
 <div class="sidebar-section">
   <h3 class="sidebar-heading">Documentation</h3>
-  <ul class="sidebar-list">
-    {docItems.map((doc) => {
+  <ul class="sidebar-list" id="sidebar-list">
+    {docItems.map((doc, index) => {
       const slug = doc.id.replace('.md', '');
+      const hasImage = !!doc.data.image;
       return (
-        <li class="sidebar-item">
-          <a 
-            href={`/adamosophy/docs/${slug}`} 
-            class:list={['sidebar-link', { active: slug === currentSlug }]}
-          >
-            {doc.data.title}
-          </a>
+        <li class="sidebar-item" data-slug={slug} data-index={index}>
+          <div class="sidebar-item-wrapper">
+            <div class="sidebar-link-content">
+              <button class="drag-handle" title="Drag to reorder" aria-label="Drag to reorder">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="9" cy="12" r="1"></circle>
+                  <circle cx="9" cy="5" r="1"></circle>
+                  <circle cx="9" cy="19" r="1"></circle>
+                  <circle cx="15" cy="12" r="1"></circle>
+                  <circle cx="15" cy="5" r="1"></circle>
+                  <circle cx="15" cy="19" r="1"></circle>
+                </svg>
+              </button>
+              <a 
+                href={`/adamosophy/docs/${slug}`} 
+                class:list={['sidebar-link', { active: slug === currentSlug }]}
+              >
+                {doc.data.title}
+              </a>
+            </div>
+            <button class="accordion-toggle" title="Edit metadata" aria-label="Edit metadata">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+          </div>
+          <div class="accordion-content">
+            <div class="accordion-form">
+              <div class="form-group">
+                <label for={`title-${slug}`}>Title</label>
+                <input type="text" id={`title-${slug}`} name="title" value={doc.data.title} />
+              </div>
+              <div class="form-group">
+                <label for={`description-${slug}`}>Description</label>
+                <textarea id={`description-${slug}`} name="description" rows="3">{doc.data.description || ''}</textarea>
+              </div>
+              <div class="form-group">
+                <label for={`image-${slug}`}>Image</label>
+                <div class="image-picker">
+                  <input type="text" id={`image-${slug}`} name="image" value={doc.data.image || ''} placeholder="/docs/images/your-image.jpg" />
+                  <label for={`file-${slug}`} class="file-picker-btn">Choose File</label>
+                  <input type="file" id={`file-${slug}`} class="file-input" accept="image/*" data-slug={slug} />
+                </div>
+                {hasImage && (
+                  <div class="image-preview">
+                    <img src={doc.data.image} alt={`${doc.data.title} preview`} />
+                  </div>
+                )}
+              </div>
+              <div class="form-actions">
+                <button class="save-btn" data-slug={slug}>Save Changes</button>
+                <span class="save-status"></span>
+              </div>
+            </div>
+          </div>
         </li>
       );
     })}
   </ul>
 </div>
+
+<script>
+  // Accordion functionality
+  document.querySelectorAll('.accordion-toggle').forEach(toggle => {
+    toggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      const item = toggle.closest('.sidebar-item');
+      const content = item.querySelector('.accordion-content');
+      const isExpanded = content.classList.contains('expanded');
+      
+      // Close all other accordions
+      document.querySelectorAll('.accordion-content.expanded').forEach(c => {
+        if (c !== content) {
+          c.classList.remove('expanded');
+          c.style.maxHeight = null;
+        }
+      });
+      
+      // Toggle current
+      if (isExpanded) {
+        content.classList.remove('expanded');
+        content.style.maxHeight = null;
+      } else {
+        content.classList.add('expanded');
+        content.style.maxHeight = content.scrollHeight + 'px';
+      }
+    });
+  });
+
+  // Drag and drop functionality
+  let draggedItem = null;
+  const sidebarList = document.getElementById('sidebar-list');
+
+  document.querySelectorAll('.drag-handle').forEach(handle => {
+    handle.addEventListener('mousedown', (e) => {
+      draggedItem = handle.closest('.sidebar-item');
+      draggedItem.classList.add('dragging');
+      
+      const onDragOver = (e) => {
+        e.preventDefault();
+        const afterElement = getDragAfterElement(sidebarList, e.clientY);
+        if (afterElement == null) {
+          sidebarList.appendChild(draggedItem);
+        } else {
+          sidebarList.insertBefore(draggedItem, afterElement);
+        }
+      };
+
+      const onMouseUp = () => {
+        draggedItem.classList.remove('dragging');
+        updateOrder();
+        document.removeEventListener('dragover', onDragOver);
+        document.removeEventListener('mouseup', onMouseUp);
+        draggedItem = null;
+      };
+
+      document.addEventListener('dragover', onDragOver);
+      document.addEventListener('mouseup', onMouseUp);
+    });
+    
+    // Touch support for mobile
+    handle.addEventListener('touchstart', (e) => {
+      draggedItem = handle.closest('.sidebar-item');
+      draggedItem.classList.add('dragging');
+    }, { passive: true });
+
+    handle.addEventListener('touchmove', (e) => {
+      if (!draggedItem) return;
+      e.preventDefault();
+      const touch = e.touches[0];
+      const afterElement = getDragAfterElement(sidebarList, touch.clientY);
+      if (afterElement == null) {
+        sidebarList.appendChild(draggedItem);
+      } else {
+        sidebarList.insertBefore(draggedItem, afterElement);
+      }
+    }, { passive: false });
+
+    handle.addEventListener('touchend', () => {
+      if (draggedItem) {
+        draggedItem.classList.remove('dragging');
+        updateOrder();
+        draggedItem = null;
+      }
+    });
+  });
+
+  function getDragAfterElement(container, y) {
+    const draggableElements = [...container.querySelectorAll('.sidebar-item:not(.dragging)')];
+
+    return draggableElements.reduce((closest, child) => {
+      const box = child.getBoundingClientRect();
+      const offset = y - box.top - box.height / 2;
+      if (offset < 0 && offset > closest.offset) {
+        return { offset: offset, element: child };
+      } else {
+        return closest;
+      }
+    }, { offset: Number.NEGATIVE_INFINITY }).element;
+  }
+
+  async function updateOrder() {
+    const items = document.querySelectorAll('.sidebar-item');
+    const orderUpdates = [];
+    
+    items.forEach((item, index) => {
+      const slug = item.dataset.slug;
+      orderUpdates.push({ slug, newOrder: index });
+    });
+
+    // Send order update to server
+    try {
+      const response = await fetch('/api/update-doc-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ updates: orderUpdates })
+      });
+      
+      if (response.ok) {
+        console.log('Order updated successfully');
+      }
+    } catch (error) {
+      console.error('Failed to update order:', error);
+    }
+  }
+
+  // Image file picker handling
+  document.querySelectorAll('.file-input').forEach(input => {
+    input.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const slug = input.dataset.slug;
+      const imageInput = document.getElementById(`image-${slug}`);
+      
+      // Upload image
+      const formData = new FormData();
+      formData.append('image', file);
+      formData.append('slug', slug);
+
+      try {
+        const response = await fetch('/api/upload-image', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          imageInput.value = data.imagePath;
+          
+          // Update or create preview
+          let preview = document.querySelector(`.sidebar-item[data-slug="${slug}"] .image-preview`);
+          if (!preview) {
+            preview = document.createElement('div');
+            preview.className = 'image-preview';
+            imageInput.parentElement.after(preview);
+          }
+          preview.innerHTML = `<img src="${data.imagePath}" alt="Preview" />`;
+        }
+      } catch (error) {
+        console.error('Failed to upload image:', error);
+      }
+    });
+  });
+
+  // Save metadata changes
+  document.querySelectorAll('.save-btn').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      const slug = btn.dataset.slug;
+      const item = document.querySelector(`.sidebar-item[data-slug="${slug}"]`);
+      const statusEl = item.querySelector('.save-status');
+      
+      const title = item.querySelector(`#title-${slug}`).value;
+      const description = item.querySelector(`#description-${slug}`).value;
+      const image = item.querySelector(`#image-${slug}`).value;
+
+      statusEl.textContent = 'Saving...';
+      
+      try {
+        const response = await fetch('/api/update-doc-metadata', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ slug, title, description, image })
+        });
+
+        if (response.ok) {
+          statusEl.textContent = 'Saved!';
+          setTimeout(() => {
+            statusEl.textContent = '';
+          }, 2000);
+        } else {
+          statusEl.textContent = 'Error saving';
+        }
+      } catch (error) {
+        console.error('Failed to save metadata:', error);
+        statusEl.textContent = 'Error';
+      }
+    });
+  });
+</script>
 
 <style>
   .sidebar-section {
@@ -51,9 +300,77 @@ const docItems = await getDocs();
 
   .sidebar-item {
     display: block;
+    position: relative;
+    transition: background-color 0.2s ease;
+  }
+
+  .sidebar-item.dragging {
+    opacity: 0.5;
+    background-color: var(--color-bg-tertiary);
+  }
+
+  .sidebar-item-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-xs);
+  }
+
+  .sidebar-link-content {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    gap: var(--space-xs);
+  }
+
+  .drag-handle {
+    opacity: 0;
+    background: none;
+    border: none;
+    cursor: grab;
+    padding: var(--space-xs);
+    color: var(--color-text-tertiary);
+    transition: opacity 0.2s ease, color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sidebar-item:hover .drag-handle {
+    opacity: 1;
+  }
+
+  .drag-handle:hover {
+    color: var(--color-primary);
+  }
+
+  .drag-handle:active {
+    cursor: grabbing;
+  }
+
+  .accordion-toggle {
+    opacity: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: var(--space-xs);
+    color: var(--color-text-tertiary);
+    transition: opacity 0.2s ease, color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sidebar-item:hover .accordion-toggle {
+    opacity: 1;
+  }
+
+  .accordion-toggle:hover {
+    color: var(--color-primary);
   }
 
   .sidebar-link {
+    flex: 1;
     display: block;
     padding: var(--space-sm) var(--space-md);
     color: var(--color-text-secondary);
@@ -71,5 +388,122 @@ const docItems = await getDocs();
     color: var(--color-primary);
     font-weight: 600;
     background-color: var(--color-bg);
+  }
+
+  .accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    margin-top: var(--space-xs);
+  }
+
+  .accordion-content.expanded {
+    max-height: 500px;
+    overflow: visible;
+  }
+
+  .accordion-form {
+    background-color: var(--color-bg);
+    padding: var(--space-md);
+    border-radius: 0.375rem;
+    border: 1px solid var(--color-border);
+  }
+
+  .form-group {
+    margin-bottom: var(--space-sm);
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-xs);
+  }
+
+  .form-group input[type="text"],
+  .form-group textarea {
+    width: 100%;
+    padding: var(--space-xs) var(--space-sm);
+    border: 1px solid var(--color-border);
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    background-color: var(--color-bg-primary);
+    color: var(--color-text);
+  }
+
+  .form-group input[type="text"]:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+  }
+
+  .image-picker {
+    display: flex;
+    gap: var(--space-sm);
+    align-items: center;
+  }
+
+  .image-picker input[type="text"] {
+    flex: 1;
+  }
+
+  .file-picker-btn {
+    padding: var(--space-xs) var(--space-sm);
+    background-color: var(--color-primary);
+    color: white;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 0.75rem;
+    transition: background-color 0.2s ease;
+  }
+
+  .file-picker-btn:hover {
+    background-color: var(--color-primary-dark);
+  }
+
+  .file-input {
+    display: none;
+  }
+
+  .image-preview {
+    margin-top: var(--space-sm);
+    max-width: 200px;
+    border-radius: 0.25rem;
+    overflow: hidden;
+  }
+
+  .image-preview img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .form-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-top: var(--space-md);
+  }
+
+  .save-btn {
+    padding: var(--space-xs) var(--space-md);
+    background-color: var(--color-success);
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .save-btn:hover {
+    background-color: var(--color-success-dark);
+  }
+
+  .save-status {
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
   }
 </style>

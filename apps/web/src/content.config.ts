@@ -6,6 +6,7 @@ const docsCollection = defineCollection({
     title: z.string(),
     description: z.string().optional(),
     sidebarOrder: z.number().optional(),
+    image: z.string().optional(), // Optional image path
   }),
 });
 

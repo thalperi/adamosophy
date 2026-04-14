@@ -13,10 +13,12 @@ This document tracks the current state of development for the Adamosophy documen
 
 - [x] Fix navigation routing and 404 errors
 - [x] Unify sidebar styling across layouts
+- [x] Implement drag-and-drop reordering UI (frontend)
+- [x] Add accordion metadata editor UI (frontend)
+- [x] Create API endpoints for updates (backend stubs)
+- [ ] Implement GitHub integration for actual file updates
+- [ ] Add image upload and optimization logic
 - [ ] Implement Card/List toggle view on landing page
-- [ ] Add drag-and-drop reordering for documentation sidebar
-- [ ] Integrate frontmatter editing within the drawer
-- [ ] Optimize image handling and display
 
 ## Roadmap
 
