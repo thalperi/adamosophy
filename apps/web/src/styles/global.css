@@ -304,7 +304,7 @@ body {
 /* Responsive Breakpoints */
 @media (max-width: 768px) {
   :root {
-    --sidebar-width: 0;
+    --sidebar-width: 16rem;
   }
 
   .app-grid {
@@ -316,6 +316,20 @@ body {
   }
 
   .sidebar {
+    position: fixed;
+    left: -16rem;
+    top: var(--header-height);
+    bottom: 0;
+    z-index: 999;
+    transition: left 0.3s ease;
+    width: 16rem !important;
+  }
+
+  .sidebar.open {
+    left: 0;
+  }
+
+  .sidebar-resize-handle {
     display: none;
   }
 

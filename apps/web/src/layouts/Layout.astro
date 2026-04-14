@@ -32,51 +32,82 @@ import '../styles/global.css';
 <p>&copy; 2026 Adamosophy. All rights reserved. | Build: <script>document.write(new Date().toISOString())</script></p>
 </footer>
 </div>
-<script is:inline>
+<script>
 // Sidebar resize functionality
-document.addEventListener('DOMContentLoaded', () => {
-  const resizeHandle = document.getElementById('resizeHandle');
-  const sidebar = document.getElementById('sidebar');
-  let isResizing = false;
+const resizeHandle = document.getElementById('resizeHandle');
+const sidebar = document.getElementById('sidebar');
+let isResizing = false;
 
-  if (resizeHandle && sidebar) {
-    resizeHandle.addEventListener('mousedown', (e) => {
-      isResizing = true;
-      document.body.style.cursor = 'col-resize';
-      sidebar.style.transition = 'none';
-      e.preventDefault();
-    });
+if (resizeHandle && sidebar) {
+  // Mouse events for desktop
+  resizeHandle.addEventListener('mousedown', (e) => {
+    isResizing = true;
+    document.body.style.cursor = 'col-resize';
+    sidebar.style.transition = 'none';
+    e.preventDefault();
+  });
 
-    document.addEventListener('mousemove', (e) => {
-      if (!isResizing) return;
-      
-      const newWidth = e.clientX;
-      if (newWidth >= 200 && newWidth <= 600) {
-        sidebar.style.width = newWidth + 'px';
-        document.documentElement.style.setProperty('--sidebar-width', newWidth + 'px');
-      }
-    });
-
-    document.addEventListener('mouseup', () => {
-      if (isResizing) {
-        isResizing = false;
-        document.body.style.cursor = '';
-        sidebar.style.transition = '';
-        
-        // Save to localStorage
-        const currentWidth = getComputedStyle(sidebar).width;
-        localStorage.setItem('sidebar-width', currentWidth);
-      }
-    });
-
-    // Restore saved width on load
-    const savedWidth = localStorage.getItem('sidebar-width');
-    if (savedWidth) {
-      sidebar.style.width = savedWidth;
-      document.documentElement.style.setProperty('--sidebar-width', savedWidth);
+  document.addEventListener('mousemove', (e) => {
+    if (!isResizing) return;
+    
+    const newWidth = e.clientX;
+    if (newWidth >= 200 && newWidth <= 600) {
+      sidebar.style.width = newWidth + 'px';
+      document.documentElement.style.setProperty('--sidebar-width', newWidth + 'px');
     }
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (isResizing) {
+      isResizing = false;
+      document.body.style.cursor = '';
+      sidebar.style.transition = '';
+      
+      // Save to localStorage
+      const currentWidth = getComputedStyle(sidebar).width;
+      localStorage.setItem('sidebar-width', currentWidth);
+    }
+  });
+
+  // Touch events for mobile
+  resizeHandle.addEventListener('touchstart', (e) => {
+    isResizing = true;
+    document.body.style.cursor = 'col-resize';
+    sidebar.style.transition = 'none';
+    e.preventDefault();
+  }, { passive: false });
+
+  document.addEventListener('touchmove', (e) => {
+    if (!isResizing) return;
+    
+    const touch = e.touches[0];
+    const newWidth = touch.clientX;
+    if (newWidth >= 200 && newWidth <= 600) {
+      sidebar.style.width = newWidth + 'px';
+      document.documentElement.style.setProperty('--sidebar-width', newWidth + 'px');
+    }
+    e.preventDefault();
+  }, { passive: false });
+
+  document.addEventListener('touchend', () => {
+    if (isResizing) {
+      isResizing = false;
+      document.body.style.cursor = '';
+      sidebar.style.transition = '';
+      
+      // Save to localStorage
+      const currentWidth = getComputedStyle(sidebar).width;
+      localStorage.setItem('sidebar-width', currentWidth);
+    }
+  });
+
+  // Restore saved width on load
+  const savedWidth = localStorage.getItem('sidebar-width');
+  if (savedWidth) {
+    sidebar.style.width = savedWidth;
+    document.documentElement.style.setProperty('--sidebar-width', savedWidth);
   }
-});
+}
 </script>
 </body>
 </html>
