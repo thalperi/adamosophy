@@ -10,9 +10,12 @@
 <li class="task-list-item"><input type="checkbox" checked disabled> Implement drag-and-drop reordering UI (frontend)</li>
 <li class="task-list-item"><input type="checkbox" checked disabled> Add accordion metadata editor UI (frontend)</li>
 <li class="task-list-item"><input type="checkbox" checked disabled> Create API endpoints for updates (backend stubs)</li>
+<li class="task-list-item"><input type="checkbox" checked disabled> Fix build errors in API routes (esbuild parsing issues with <code>import type</code>)</li>
+<li class="task-list-item"><input type="checkbox" checked disabled> Implement resizable sidebar with drag handle (default 30% wider at 21rem)</li>
+<li class="task-list-item"><input type="checkbox" checked disabled> Add Card/List toggle view on Docs landing page</li>
+<li class="task-list-item"><input type="checkbox" checked disabled> Create UI architecture documentation (ui.md) inspired by Couchers.org</li>
 <li class="task-list-item"><input type="checkbox" disabled> Implement GitHub integration for actual file updates</li>
 <li class="task-list-item"><input type="checkbox" disabled> Add image upload and optimization logic</li>
-<li class="task-list-item"><input type="checkbox" disabled> Implement Card/List toggle view on landing page</li>
 </ul>
 <h2 id="roadmap">Roadmap</h2>
 <p>The following features are currently being implemented to enhance the documentation experience:</p>
@@ -48,10 +51,20 @@
 <li><strong>Unified Components</strong>: All cards and list items will use a single shared component (<code>DocCard.astro</code>) to ensure identical styling across the sidebar, landing page, and any other listings.</li>
 <li><strong>CSS Grid</strong>: The document list in the drawer and the landing page will utilize CSS Grid for responsive, consistent layout.</li>
 </ul>
+<h3 id="5-resizable-sidebar">5. Resizable Sidebar</h3>
+<ul>
+<li><strong>Default Width</strong>: Increased from 16rem to 21rem (30% wider) for better readability</li>
+<li><strong>Resize Handle</strong>: Appears on hover at the right edge of the sidebar with blue highlight</li>
+<li><strong>Drag-to-Resize</strong>: Users can drag the handle to adjust sidebar width between 200px-600px</li>
+<li><strong>Persistence</strong>: Sidebar width is saved to localStorage and restored on page load</li>
+<li><strong>Visual Feedback</strong>: Cursor changes to <code>ew-resize</code> when hovering over the handle</li>
+</ul>
 <h2 id="notes">Notes</h2>
 <ul>
 <li><strong>No CMS Yet</strong>: These features provide a lightweight editing interface directly in the sidebar, delaying the need for a full Headless CMS until the documentation volume increases.</li>
 <li><strong>GitHub Integration</strong>: Changes made via the UI (reordering, metadata edits) will commit directly to the <code>main</code> branch using the provided PAT, triggering automatic rebuilds.</li>
+<li><strong>UI Architecture</strong>: Documentation system design is inspired by Couchers.org’s clean, component-driven approach with emphasis on usability and accessibility.</li>
+<li><strong>Build Fixes</strong>: Resolved esbuild parsing errors in API routes by removing frontmatter delimiters and changing <code>import type</code> to <code>import</code> statements.</li>
 </ul>
 <hr>
-<p><em>Last Updated: Immediately prior to implementation of interactive sidebar features.</em></p> </article>  </main> <footer class="footer" data-astro-cid-mw7aashj> <p data-astro-cid-mw7aashj>&copy; 2025 Adamosophy. All rights reserved.</p> </footer> </div> </body></html> 
+<p><em>Last Updated: Session including resizable sidebar, card/list toggle, UI documentation, and build fixes.</em></p> </article>  </main> <footer class="footer" data-astro-cid-mw7aashj> <p data-astro-cid-mw7aashj>&copy; 2025 Adamosophy. All rights reserved.</p> </footer> </div> </body></html> 
