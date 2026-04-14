@@ -22,9 +22,11 @@ This document tracks the current state of development for the Adamosophy documen
 - [x] Create UI architecture documentation (ui.md) inspired by Couchers.org
 - [ ] Implement GitHub integration for actual file updates
 - [ ] Add image upload and optimization logic
-- [ ] Fix MD viewer nested list indentation (all list items appear left-aligned instead of hierarchically indented)
+- [x] Fix MD viewer nested list indentation (all list items appear left-aligned instead of hierarchically indented)
+  - **Completed**: 2026-04-14 - Implemented modular Markdown renderer using marked + github-markdown-css
+  - **Build**: Run #91 passed successfully
 - [ ] Implement 3 Markdown rendering options with user preference setting
-  - [ ] Option 1: marked + github-markdown-css
+  - [x] Option 1: marked + github-markdown-css (DEFAULT - Completed 2026-04-14)
   - [ ] Option 2: remark / rehype ecosystem solution
   - [ ] Option 3: @tailwindcss/typography with prose class
   - [ ] Add tristate toggle in drawer for renderer selection
