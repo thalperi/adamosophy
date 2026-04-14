@@ -17,9 +17,14 @@ import '../styles/global.css';
 <body>
 <div class="app-grid">
 <TopNav />
-<aside class="sidebar">
+<aside class="sidebar" id="sidebar">
 <Sidebar />
 </aside>
+<div class="sidebar-resize-handle" id="resizeHandle" title="Drag to resize sidebar">
+<svg xmlns="http://www.w3.org/2000/svg" width="8" height="24" viewBox="0 0 8 24" fill="none" stroke="currentColor" stroke-width="1">
+<line x1="4" y1="4" x2="4" y2="20"></line>
+</svg>
+</div>
 <main class="main-content">
 <slot />
 </main>
@@ -27,5 +32,51 @@ import '../styles/global.css';
 <p>&copy; 2026 Adamosophy. All rights reserved. | Build: <script>document.write(new Date().toISOString())</script></p>
 </footer>
 </div>
+<script is:inline>
+// Sidebar resize functionality
+document.addEventListener('DOMContentLoaded', () => {
+  const resizeHandle = document.getElementById('resizeHandle');
+  const sidebar = document.getElementById('sidebar');
+  let isResizing = false;
+
+  if (resizeHandle && sidebar) {
+    resizeHandle.addEventListener('mousedown', (e) => {
+      isResizing = true;
+      document.body.style.cursor = 'col-resize';
+      sidebar.style.transition = 'none';
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isResizing) return;
+      
+      const newWidth = e.clientX;
+      if (newWidth >= 200 && newWidth <= 600) {
+        sidebar.style.width = newWidth + 'px';
+        document.documentElement.style.setProperty('--sidebar-width', newWidth + 'px');
+      }
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (isResizing) {
+        isResizing = false;
+        document.body.style.cursor = '';
+        sidebar.style.transition = '';
+        
+        // Save to localStorage
+        const currentWidth = getComputedStyle(sidebar).width;
+        localStorage.setItem('sidebar-width', currentWidth);
+      }
+    });
+
+    // Restore saved width on load
+    const savedWidth = localStorage.getItem('sidebar-width');
+    if (savedWidth) {
+      sidebar.style.width = savedWidth;
+      document.documentElement.style.setProperty('--sidebar-width', savedWidth);
+    }
+  }
+});
+</script>
 </body>
 </html>

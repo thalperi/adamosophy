@@ -10,18 +10,95 @@ const docs = await getDocs();
     <h1>Documentation</h1>
     <p class="intro">Explore our collection of documents and guides.</p>
     
-    <div class="docs-grid">
-      {docs.map((doc) => (
-        <a href={`/adamosophy/docs/${doc.id.replace('.md', '')}`} class="doc-card">
-          <div class="card-content">
-            <h2>{doc.data.title}</h2>
-            {doc.data.description && <p>{doc.data.description}</p>}
-          </div>
-        </a>
-      ))}
+    <div class="view-controls">
+      <button 
+        id="toggleView" 
+        class="view-toggle-btn"
+        aria-label="Toggle between card and list view"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+        <span class="btn-text">Card View</span>
+      </button>
+    </div>
+    
+    <div class="docs-grid" id="docsGrid" data-view-mode="card">
+      {docs.map((doc) => {
+        const slug = doc.id.replace('.md', '');
+        const hasImage = doc.data.image && doc.data.image.trim() !== '';
+        
+        return (
+          <a href={`/adamosophy/docs/${slug}`} class="doc-card">
+            {hasImage && (
+              <div class="card-image">
+                <img src={doc.data.image} alt={doc.data.title} loading="lazy" />
+              </div>
+            )}
+            <div class="card-content">
+              <h2>{doc.data.title}</h2>
+              {doc.data.description && <p>{doc.data.description}</p>}
+            </div>
+          </a>
+        );
+      })}
     </div>
   </div>
 </DocsLayout>
+
+<script is:inline>
+document.addEventListener('DOMContentLoaded', () => {
+  const toggleBtn = document.getElementById('toggleView');
+  const docsGrid = document.getElementById('docsGrid');
+  const btnText = toggleBtn?.querySelector('.btn-text');
+  const btnIcon = toggleBtn?.querySelector('svg');
+  
+  // Restore saved view mode
+  const savedView = localStorage.getItem('docs-view-mode') || 'card';
+  if (docsGrid) {
+    docsGrid.setAttribute('data-view-mode', savedView);
+    updateButtonState(savedView);
+  }
+  
+  function updateButtonState(viewMode) {
+    if (!btnText || !btnIcon) return;
+    
+    if (viewMode === 'card') {
+      btnText.textContent = 'Card View';
+      btnIcon.innerHTML = `
+        <rect x="3" y="3" width="7" height="7"></rect>
+        <rect x="14" y="3" width="7" height="7"></rect>
+        <rect x="14" y="14" width="7" height="7"></rect>
+        <rect x="3" y="14" width="7" height="7"></rect>
+      `;
+    } else {
+      btnText.textContent = 'List View';
+      btnIcon.innerHTML = `
+        <line x1="8" y1="6" x2="21" y2="6"></line>
+        <line x1="8" y1="12" x2="21" y2="12"></line>
+        <line x1="8" y1="18" x2="21" y2="18"></line>
+        <line x1="3" y1="6" x2="3.01" y2="6"></line>
+        <line x1="3" y1="12" x2="3.01" y2="12"></line>
+        <line x1="3" y1="18" x2="3.01" y2="18"></line>
+      `;
+    }
+  }
+  
+  toggleBtn?.addEventListener('click', () => {
+    if (!docsGrid) return;
+    
+    const currentMode = docsGrid.getAttribute('data-view-mode');
+    const newMode = currentMode === 'card' ? 'list' : 'card';
+    
+    docsGrid.setAttribute('data-view-mode', newMode);
+    localStorage.setItem('docs-view-mode', newMode);
+    updateButtonState(newMode);
+  });
+});
+</script>
 
 <style>
   .docs-landing {
@@ -42,27 +119,101 @@ const docs = await getDocs();
     margin-bottom: 2rem;
   }
   
+  .view-controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: var(--space-md);
+  }
+  
+  .view-toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  
+  .view-toggle-btn:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background-color: var(--color-bg-secondary);
+  }
+  
+  .view-toggle-btn svg {
+    flex-shrink: 0;
+  }
+  
   .docs-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: var(--space-lg);
   }
   
+  .docs-grid[data-view-mode="card"] {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+  
+  .docs-grid[data-view-mode="list"] {
+    grid-template-columns: 1fr;
+  }
+  
   .doc-card {
-    display: block;
-    padding: var(--space-lg);
+    display: flex;
+    flex-direction: column;
     background-color: var(--color-bg);
     border: 1px solid var(--color-border);
     border-radius: 0.5rem;
     text-decoration: none;
     color: inherit;
     transition: all 0.2s ease;
+    overflow: hidden;
+  }
+  
+  .docs-grid[data-view-mode="list"] .doc-card {
+    flex-direction: row;
+    align-items: center;
+    padding: var(--space-md);
   }
   
   .doc-card:hover {
     border-color: var(--color-primary);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     transform: translateY(-2px);
+  }
+  
+  .card-image {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    background-color: var(--color-bg-secondary);
+  }
+  
+  .docs-grid[data-view-mode="list"] .card-image {
+    width: 120px;
+    height: 80px;
+    flex-shrink: 0;
+    margin-right: var(--space-md);
+  }
+  
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .card-content {
+    padding: var(--space-md);
+    flex: 1;
+  }
+  
+  .docs-grid[data-view-mode="list"] .card-content {
+    padding: 0;
   }
   
   .card-content h2 {
@@ -72,9 +223,18 @@ const docs = await getDocs();
     margin-bottom: var(--space-sm);
   }
   
+  .docs-grid[data-view-mode="list"] .card-content h2 {
+    font-size: 1rem;
+    margin-bottom: 0;
+  }
+  
   .card-content p {
     font-size: 0.875rem;
     color: var(--color-text-secondary);
     line-height: 1.6;
+  }
+  
+  .docs-grid[data-view-mode="list"] .card-content p {
+    display: none;
   }
 </style>
