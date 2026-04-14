@@ -1,3 +1,9 @@
+---
+title: 'Adamosophy Settings Documentation'
+sortOrder: 98
+description: 'Configuration options for user settings including Markdown rendering methods'
+---
+
 # Adamosophy Settings Documentation
 
 ## Overview

@@ -33,12 +33,54 @@ description: 'Operational constraints, GitHub interaction protocols, and a log o
         ```
 *   **Branch Strategy**: Commit and push directly to the `main` branch. **Do not create new branches** unless explicitly instructed.
 *   **Build Verification**: After pushing a commit that triggers a build:
-    1.  **Wait** for the GitHub Actions build to complete.
-    2.  **Verify** the build status (success/failure) via logs or API.
-    3.  **Report** back to the user only after confirming the actual result.
-    *   *Critical*: Do not claim success until the build has actually passed.
+    1.  **Wait** for the GitHub Actions build to complete using the **Active Polling Loop**.
+    2.  **Active Polling Loop Protocol**:
+        *   Initiate the check immediately after push.
+        *   Enter a loop: Sleep for **5 seconds**, then check the build status via API.
+        *   Repeat this cycle a **maximum of 6 times** (Total wait time: ~30 seconds).
+        *   **If Success/Failure is found:** Report the result immediately and proceed to the next step.
+        *   **If No Result after 6 attempts:** Stop looping. Report to the user: "Build status pending after 30 seconds. Please check GitHub Actions manually." Gracefully end the verification task there; do not leave the task in a "waiting" limbo state.
+    3.  **Verify** the build status (success/failure) via logs or API.
+    4.  **Report** back to the user only after confirming the actual result.
+    5.  **Never transfer the waiting burden to the user.** If you initiate a wait, you must own the loop until a result is found or the limit is reached.
+    *   *Critical*: Do not claim success until the build has actually passed. Do not mark a task as "Completed" until build verification is resolved.
 
-## 3. Session Context: Build Failure & Resolution (Commit 866b672)
+## 3. Critical Failure Modes & Anti-Hallucination Protocol
+
+**STRICT PROHIBITION ON SIMULATION:**
+You are an AI agent operating in a real environment. You **MUST NOT** simulate, hallucinate, or pretend that an action has been completed unless you have successfully executed the command and received a positive confirmation from the system.
+- **NEVER** say "I have updated the file" until the `str_replace_editor` tool returns a success status.
+- **NEVER** say "I have committed/pushed" until the `bash` command returns exit code 0.
+- **NEVER** say "The build passed" until you have actively polled the GitHub Actions API and confirmed the `conclusion` is `success`.
+- **NEVER** generate fake commit hashes, fake URLs, or fake log outputs. If you do not have the data, state "Waiting for data..." and fetch it.
+
+**TRUTHFULNESS STANDARD:**
+- If you are unsure, say "I am unsure."
+- If a tool fails, report the exact error message.
+- If the build is running, report "Build is in progress..." and keep checking (per the Active Polling Loop).
+- **Do not optimize for brevity at the cost of accuracy.** It is better to be verbose and accurate than concise and wrong.
+
+## 4. Markdown Frontmatter Standards
+
+**MANDATORY FRONTMATTER FOR ALL `.md` FILES:**
+Every Markdown file created for the docs collection (`/src/content/docs/`) **MUST** include valid YAML frontmatter at the very top of the file. Without this, the Astro build will fail.
+
+**Required Fields:**
+```markdown
+---
+title: 'Human Readable Title'
+sortOrder: 99
+description: 'Brief description of the document content'
+---
+```
+
+- `title` (String, Required): The display title of the document.
+- `sortOrder` (Integer, Required): Determines the order in the navigation/sidebar.
+- `description` (String, Optional but Recommended): Brief summary for SEO and previews.
+
+**Validation Rule:** Before committing any new `.md` file, verify it contains this frontmatter block. Missing frontmatter = Build Failure.
+
+## 5. Session Context: Build Failure & Resolution (Commit 866b672)
 
 **Issue**: The build triggered by commit `866b672` (Interactive Sidebar feature) failed.
 **Error**: `Expected "(" but found "type"` in API routes (`update-doc-metadata.ts`, `update-doc-order.ts`, `upload-image.ts`).
@@ -48,7 +90,7 @@ description: 'Operational constraints, GitHub interaction protocols, and a log o
 *   Removed unnecessary trailing frontmatter delimiters (`---`) from API route files.
 *   Verified fix by waiting for successful build completion.
 
-## 4. Feature Implementation Log
+## 6. Feature Implementation Log
 
 ### A. Resizable Sidebar
 *   **Requirement**: Make the documentation drawer resizable, defaulting to 30% wider than the original (21rem vs 16rem).
@@ -70,14 +112,14 @@ description: 'Operational constraints, GitHub interaction protocols, and a log o
 *   **Inspiration**: Modeled after **Couchers.org** UI design principles (flattering imitation).
 *   **Action**: Created/Updated `ui.md` to document layout systems, component libraries, and interaction patterns based on this inspiration.
 
-## 5. Current Project State
+## 7. Current Project State
 
 *   **Frontend**: Interactive sidebar (drag-and-drop reordering, accordion metadata editor, resizing) is functional.
 *   **Backend**: API endpoints exist but currently log changes; full GitHub write-back integration (Octokit) is pending.
 *   **Documentation**: All docs (`wip.md`, `ui.md`, `agent.md`) are beautified with enhanced Markdown structure.
 *   **Build Status**: Stable (pending next change).
 
-## 6. Pending Tasks / Backlog
+## 8. Pending Tasks / Backlog
 
 1.  **GitHub Integration**: Install `octokit` and `gray-matter` to enable API endpoints to actually commit/push file changes back to the repo.
 2.  **Image Uploads**: Implement real file storage logic in `/api/upload-image` (currently a stub).
