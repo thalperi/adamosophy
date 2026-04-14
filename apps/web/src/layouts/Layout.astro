@@ -25,7 +25,7 @@ const docItems = await getDocs();
 <ul class="sidebar-list">
 {docItems.map((doc) => (
 <li class="sidebar-item">
-<a href={`/adamosophy/docs/${doc.slug}`} class="sidebar-link">{doc.title}</a>
+<a href={`/adamosophy/docs/${doc.id.replace('.md', '')}`} class="sidebar-link">{doc.data.title}</a>
 </li>
 ))}
 </ul>
