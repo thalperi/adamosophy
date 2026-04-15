@@ -1,62 +1,48 @@
 ```
+# Dependencies
+node_modules/
+venv/
+.venv/
+__pycache__/
+.mypy_cache/
+.pytest_cache/
+target/
+.gradle/
+
 # Build artifacts
 dist/
 build/
+*.pyc
+*.class
 *.o
+*.exe
+*.dll
+*.so
+*.a
 *.obj
 *.out
 
-# Dependencies
-node_modules/
-.pnpm-store/
-.yarn/
-.npm/
-
-# Environment
-.env
-.env.local
-.env.*
-
-# Cache directories
-.cache/
-.node_cache/
-.nyc_output/
-coverage/
-htmlcov/
-.nyc-output/
-
-# Logs
-*.log
-
-# Temporary files
-*.tmp
-*.temp
-.DS_Store
-Thumbs.db
-
-# Editor/IDE
+# Editor/IDE files
 .vscode/
 .idea/
 *.swp
 *.swo
+*.tmp
 
-# Python specific
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-*.so
+# System files
+.DS_Store
+Thumbs.db
+.env
+.env.local
+*.env.*
+
+# Logs
+*.log
+
+# Coverage
+coverage/
+htmlcov/
 .coverage
-
-# JavaScript/Node specific
-.next/
-.nuxt/
-.vuepress/dist
-.svelte-kit/
-.output/
-.vercel/
-.netlify/
 
 # Compressed files
 *.zip

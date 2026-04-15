@@ -124,3 +124,14 @@ description: 'Brief description of the document content'
 1.  **GitHub Integration**: Install `octokit` and `gray-matter` to enable API endpoints to actually commit/push file changes back to the repo.
 2.  **Image Uploads**: Implement real file storage logic in `/api/upload-image` (currently a stub).
 3.  **Refinement**: Continue refining mobile responsiveness and touch interactions based on user feedback.
+
+## 9. The `incoming/` Folder - Off Limits
+
+**CRITICAL: The `incoming/` folder is OFF LIMITS for any modifications or workflow integration while working on adamosophy.**
+
+*   **Reference Only**: You may refer to documents in the `incoming/` folder from time to time for informational purposes, but **do not modify, move, or integrate** any files from this folder into the active workflow.
+*   **External Origin**: The `incoming/` folder contains documentation copied from another repository (the Republet project). It has **not yet been integrated** into our current workflow.
+*   **Future Monorepo Structure**: When integration occurs, the `incoming/` folder will be replaced by the actual external repository becoming one of many repos that make up the adamosophy monorepo we are currently configuring.
+*   **Current Website Purpose**: The website we are building now is designed to manage this future monorepo structure. Until that architecture is fully implemented, treat `incoming/` as a read-only reference archive.
+*   **Do Not Assume Integration**: Never assume that content from `incoming/` should be migrated, consolidated, or modified unless explicitly instructed by the user.
+
