@@ -2,6 +2,7 @@
 import TopNav from '../components/TopNav.astro';
 import Sidebar from '../components/Sidebar.astro';
 import '../styles/global.css';
+import 'github-markdown-css/github-markdown.css';
 
 const pathSegments = Astro.url.pathname.split('/').filter(Boolean);
 const currentSlug = pathSegments[pathSegments.length - 1] || '';

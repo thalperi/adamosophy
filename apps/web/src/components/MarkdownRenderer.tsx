@@ -1,5 +1,4 @@
 import { marked } from 'marked';
-import 'github-markdown-css/github-markdown.css';
 import type { MarkdownRenderingStrategy } from '../../types/markdown';
 
 interface MarkdownRendererProps {
