@@ -60,6 +60,15 @@ If you struggled with something and learned important lessons:
 
 Tasks being worked on in the current session:
 
+- [ ] Implement Identity Engine (did:peer Authentication System)
+  - Create `src/lib/identity.ts` for Ed25519 keypair generation and did:peer document construction
+  - Implement secure storage: encrypt private key with user password (Web Crypto API) and store in IndexedDB
+  - Build "first run" UI flow for new account creation/import
+  - Implement Willow sync for encrypted Identity Packet backup/recovery
+  - Create delegate backup UI for generating recovery codes/links (full-key storage, no sharding)
+  - Ensure cross-device portability (QR code transfer, session continuity)
+  - Reference: identity.md (full technical specification)
+
 - [ ] Implement GitHub integration for actual file updates
   - Install `octokit` and `gray-matter` packages
   - Update API endpoints to commit/push changes back to repo
