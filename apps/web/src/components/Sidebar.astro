@@ -92,11 +92,35 @@ const docItems = await getDocs();
         <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
       </svg>
-      <span>Dark Mode</span>
+      <span>Theme</span>
     </label>
-    <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark mode" title="Toggle dark mode">
-      <span class="toggle-indicator"></span>
-    </button>
+    <div class="theme-toggle-container">
+      <button id="theme-light" class="theme-option-btn" data-theme="light" title="Light mode" aria-label="Light mode">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+      </button>
+      <button id="theme-system" class="theme-option-btn" data-theme="system" title="System preference" aria-label="System preference">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+          <line x1="8" y1="21" x2="16" y2="21"></line>
+          <line x1="12" y1="17" x2="12" y2="21"></line>
+        </svg>
+      </button>
+      <button id="theme-dark" class="theme-option-btn" data-theme="dark" title="Dark mode" aria-label="Dark mode">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+    </div>
   </div>
 </div>
 
@@ -299,34 +323,49 @@ const docItems = await getDocs();
     });
   });
 
-  // Dark Mode Toggle Functionality
-  const themeToggle = document.getElementById('theme-toggle');
+  // Theme Toggle Functionality (Light/Dark/System)
   const htmlElement = document.documentElement;
+  const themeButtons = document.querySelectorAll('.theme-option-btn');
   
-  // Check for saved theme preference or default to system preference
-  const savedTheme = localStorage.getItem('theme');
-  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  
-  // Apply initial theme
-  if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
-    htmlElement.setAttribute('data-theme', 'dark');
-    themeToggle.classList.add('active');
+  function applyTheme(theme) {
+    if (theme === 'dark') {
+      htmlElement.setAttribute('data-theme', 'dark');
+    } else if (theme === 'light') {
+      htmlElement.removeAttribute('data-theme');
+    } else if (theme === 'system') {
+      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (systemPrefersDark) {
+        htmlElement.setAttribute('data-theme', 'dark');
+      } else {
+        htmlElement.removeAttribute('data-theme');
+      }
+    }
+    
+    // Update active button state
+    themeButtons.forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.theme === theme);
+    });
   }
   
-  // Toggle theme on button click
-  themeToggle.addEventListener('click', () => {
-    const currentTheme = htmlElement.getAttribute('data-theme');
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    
-    if (newTheme === 'dark') {
-      htmlElement.setAttribute('data-theme', 'dark');
-      themeToggle.classList.add('active');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      htmlElement.removeAttribute('data-theme');
-      themeToggle.classList.remove('active');
-      localStorage.setItem('theme', 'light');
+  // Check for saved theme preference or default to system
+  const savedTheme = localStorage.getItem('theme') || 'system';
+  applyTheme(savedTheme);
+  
+  // Listen for system theme changes when in system mode
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    const currentSavedTheme = localStorage.getItem('theme') || 'system';
+    if (currentSavedTheme === 'system') {
+      applyTheme('system');
     }
+  });
+  
+  // Handle theme button clicks
+  themeButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const selectedTheme = btn.dataset.theme;
+      localStorage.setItem('theme', selectedTheme);
+      applyTheme(selectedTheme);
+    });
   });
 </script>
 
@@ -590,40 +629,44 @@ const docItems = await getDocs();
     color: var(--color-text-tertiary);
   }
 
-  .theme-toggle-btn {
-    position: relative;
-    width: 44px;
-    height: 24px;
+  .theme-toggle-container {
+    display: flex;
+    gap: var(--space-xs);
     background-color: var(--color-bg-tertiary);
+    padding: 2px;
+    border-radius: 6px;
     border: 1px solid var(--color-border);
-    border-radius: 12px;
+  }
+
+  .theme-option-btn {
+    position: relative;
+    width: 32px;
+    height: 28px;
+    background-color: transparent;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-tertiary);
   }
 
-  .theme-toggle-btn:hover {
-    border-color: var(--color-primary);
+  .theme-option-btn:hover {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-secondary);
   }
 
-  .theme-toggle-btn.active {
+  .theme-option-btn.active {
     background-color: var(--color-primary);
-    border-color: var(--color-primary);
+    color: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   }
 
-  .toggle-indicator {
-    position: absolute;
-    top: 3px;
-    left: 3px;
-    width: 16px;
-    height: 16px;
-    background-color: white;
-    border-radius: 50%;
-    transition: transform 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  }
-
-  .theme-toggle-btn.active .toggle-indicator {
-    transform: translateX(20px);
+  .theme-option-btn svg {
+    width: 14px;
+    height: 14px;
   }
 </style>

@@ -46,13 +46,13 @@
 
 /* Dark Mode Color Palette */
 [data-theme="dark"] {
-  --color-bg: #1a1d21;
-  --color-bg-secondary: #25282c;
-  --color-bg-tertiary: #2f3338;
-  --color-text: #ffffff;
-  --color-text-secondary: rgba(255, 255, 255, 0.7);
-  --color-text-tertiary: rgba(255, 255, 255, 0.5);
-  --color-border: rgba(255, 255, 255, 0.12);
+  --color-bg: #0d1117;
+  --color-bg-secondary: #161b22;
+  --color-bg-tertiary: #21262d;
+  --color-text: #f0f6fc;
+  --color-text-secondary: rgba(240, 246, 252, 0.7);
+  --color-text-tertiary: rgba(240, 246, 252, 0.5);
+  --color-border: rgba(240, 246, 252, 0.1);
   --color-primary: #6bc4a6;
   --color-primary-light: #8fd4ba;
   --color-primary-dark: #00a398;
@@ -153,7 +153,7 @@ body {
 .sidebar {
   grid-area: sidebar;
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto 1fr auto;
   gap: var(--grid-gap);
   padding: var(--grid-gap-lg);
   background-color: var(--color-bg-secondary);
