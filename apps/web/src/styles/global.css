@@ -88,6 +88,28 @@
   --color-info: #2196f3;
 }
 
+/* Default (no data-theme attribute) also uses light mode */
+:not([data-theme]) {
+  --color-bg: #ffffff;
+  --color-bg-secondary: #f5f5f5;
+  --color-bg-tertiary: #e0e0e0;
+  --color-text: #212121;
+  --color-text-secondary: rgba(33, 33, 33, 0.7);
+  --color-text-tertiary: rgba(33, 33, 33, 0.5);
+  --color-border: rgba(0, 0, 0, 0.12);
+  --color-primary: #6bc4a6;
+  --color-primary-light: #8fd4ba;
+  --color-primary-dark: #00a398;
+  --color-secondary: #fe982a;
+  --color-secondary-light: #ffad52;
+  --color-secondary-dark: #e47701;
+  --color-success: #4caf50;
+  --color-success-dark: #388e3c;
+  --color-warning: #ff9800;
+  --color-error: #f44336;
+  --color-info: #2196f3;
+}
+
 /* Dark Mode overrides for markdown-body (github-markdown-css) */
 /* Using :root [data-theme="dark"] to increase specificity and override media queries */
 :root [data-theme="dark"] .markdown-body,
