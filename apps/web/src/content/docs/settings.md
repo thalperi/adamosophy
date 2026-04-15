@@ -52,7 +52,7 @@ For initial implementation and testing, a **tristate toggle** will be available 
 *The following settings categories will be added as they are implemented:*
 
 - **Display Preferences**
-  - Theme selection (Light/Dark/System)
+  - Theme selection (Light/Dark/System) with dark mode adjustments for optimal readability
   - Font size adjustment
   - Line height preferences
   

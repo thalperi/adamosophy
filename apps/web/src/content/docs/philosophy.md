@@ -96,11 +96,7 @@ The true power of our ecosystem emerges when applications expose their opportuni
 
 **Composable Discovery**: Discovery is not confined to individual applications. A search query initiated on Earthtalk can return results from Republet, InterNovel, and Exonomy. The discovery mechanism queries across namespaces, respecting permissions while surfacing relevant content regardless of which application originally published it.
 
-### The Incoming Folder: A Living Laboratory
 
-The `incoming` folder in our repository serves as a living laboratory for ideas that inform but do not dictate our core architecture. Documents placed here—whether about Republet's LOI system, Earthtalk's architectural blueprint, or future applications we have yet to imagine—serve to educate and inspire. They are the raw materials from which our philosophy evolves, the external perspectives that challenge and refine our thinking.
-
-When a document about Republet explains how publishers might use Exonomy vouchers for paywalled content, it is not prescribing implementation details; it is illustrating the kind of synergistic opportunity our architecture enables. When Earthtalk's proposal details the Publisher-Led Aggregation model for metrics, it demonstrates how sovereignty can be preserved even in systems of measurement.
 
 ### Toward an Exosystem
 

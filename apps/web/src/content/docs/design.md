@@ -93,7 +93,7 @@ User sovereignty is not just a technical feature—it is a design principle:
   - Paywall configuration with Exonomy voucher acceptance
   - Publisher catalog management
 
-**Current Status**: Philosophy documented in `incoming` folder. Technical specifications being finalized.
+**Current Status**: Philosophy documented. Technical specifications being finalized.
 
 **Future Plans**:
 - LOI resolution and display components

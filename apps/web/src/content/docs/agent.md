@@ -8,7 +8,7 @@ description: 'Operational constraints, GitHub interaction protocols, and a log o
 ## 1. Core Operational Constraints
 
 *   **Main Branch Only**: **ALWAYS** ensure you are working on the `main` branch before doing any work on the project. Verify with `git branch` or `git status` before any file modification, commit, or push. **Never create or use any other branches** unless explicitly instructed by the user. If not on `main`, switch to it immediately with `git checkout main`.
-*   **Documentation Location**: All active project documentation is located at `/workspace/apps/web/src/content/docs/`. This is the **ONLY** directory where documentation files should be read from or written to during normal operations. Never waste time searching for documentation files elsewhere; if a document is needed, it must be in this location. The `incoming/` folder is OFF LIMITS (see Section 9).
+*   **Documentation Location**: All active project documentation is located at `/workspace/apps/web/src/content/docs/`. This is the **ONLY** directory where documentation files should be read from or written to during normal operations. Never waste time searching for documentation files elsewhere; if a document is needed, it must be in this location. The `incoming/` folder is OFF LIMITS and unavailable to the agent (see Section 9).
 *   **No Unauthorized Coding**: Do not code or modify anything without **explicit instruction** and **permission** from the user.
 *   **Verification First**: Before acting, always verify the current state of the workspace (file existence, content, build status). Never assume prior steps were completed correctly due to potential context loss.
 *   **Documentation Review**: Always review `wip.md` and other project definition documents before starting work to understand the current project state.
@@ -129,13 +129,11 @@ description: 'Brief description of the document content'
 2.  **Image Uploads**: Implement real file storage logic in `/api/upload-image` (currently a stub).
 3.  **Refinement**: Continue refining mobile responsiveness and touch interactions based on user feedback.
 
-## 9. The `incoming/` Folder - Off Limits
+## 9. The `incoming/` Folder - Unavailable to Agent
 
-**CRITICAL: The `incoming/` folder is OFF LIMITS for any modifications or workflow integration while working on adamosophy.**
+**CRITICAL: The `incoming/` folder is OFF LIMITS and unavailable to the agent while working on adamosophy.**
 
-*   **Reference Only**: You may refer to documents in the `incoming/` folder from time to time for informational purposes, but **do not modify, move, or integrate** any files from this folder into the active workflow.
-*   **External Origin**: The `incoming/` folder contains documentation copied from another repository (the Republet project). It has **not yet been integrated** into our current workflow.
-*   **Future Monorepo Structure**: When integration occurs, the `incoming/` folder will be replaced by the actual external repository becoming one of many repos that make up the adamosophy monorepo we are currently configuring.
-*   **Current Website Purpose**: The website we are building now is designed to manage this future monorepo structure. Until that architecture is fully implemented, treat `incoming/` as a read-only reference archive.
-*   **Do Not Assume Integration**: Never assume that content from `incoming/` should be migrated, consolidated, or modified unless explicitly instructed by the user.
+*   **Not Part of Active Workflow**: The `incoming/` folder is not part of the active project workflow and should not be referenced as such.
+*   **Agent Access Restricted**: The agent cannot access, modify, or integrate any files from this folder.
+*   **Documentation Focus**: All active project documentation is located at `/workspace/apps/web/src/content/docs/`. This is the **ONLY** directory where documentation files should be read from or written to during normal operations.
 

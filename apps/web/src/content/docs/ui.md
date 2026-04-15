@@ -127,7 +127,16 @@ This document defines the user interface architecture for Adamosophy, drawing in
 - **Secondary Dark**: #e47701
 
 ### Neutral Colors
-- **Background**: #313539 (dark mode)
+
+#### Light Mode
+- **Background**: #ffffff
+- **Surface**: #f5f5f5
+- **Text Primary**: #212121
+- **Text Secondary**: rgba(33, 33, 33, 0.7)
+- **Divider**: rgba(0, 0, 0, 0.12)
+
+#### Dark Mode
+- **Background**: #313539
 - **Surface**: #3d4347
 - **Text Primary**: #ffffff
 - **Text Secondary**: rgba(255, 255, 255, 0.7)
@@ -297,13 +306,14 @@ src/
 
 ## Future Enhancements
 
-1. **Dark/Light Theme Toggle**
-2. **Customizable Sidebar Items**
-3. **Advanced Search & Filtering**
-4. **Document Tags & Categories**
-5. **Collaborative Editing Indicators**
-6. **Real-time Sync Visualization**
-7. **Offline Support with PWA**
+1. **Dark/Light Theme Toggle** with system preference detection and manual override
+2. **Dark Mode Adjustments** for optimal readability across all components
+3. **Customizable Sidebar Items**
+4. **Advanced Search & Filtering**
+5. **Document Tags & Categories**
+6. **Collaborative Editing Indicators**
+7. **Real-time Sync Visualization**
+8. **Offline Support with PWA**
 
 ## References
 
