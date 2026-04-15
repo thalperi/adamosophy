@@ -69,6 +69,15 @@ Tasks being worked on in the current session:
   - [ ] Add tristate toggle in drawer for renderer selection
   - [ ] Integrate with user settings profile section
 
+- [ ] Implement Dark Mode theme system
+  - Reference: ui.md (color specs), settings.md (theme selection requirement)
+  - Create theme context/store for Light/Dark/System preference
+  - Apply dark mode color palette from ui.md (#313539 bg, #3d4347 surface, etc.)
+  - Add system preference detection via prefers-color-scheme
+  - Implement manual override toggle in UI
+  - Ensure optimal readability adjustments across all components
+  - Test all pages and components in both themes
+
 ---
 
 ## Recently Completed (Pending Removal)
