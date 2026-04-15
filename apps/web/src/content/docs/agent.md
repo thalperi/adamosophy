@@ -18,11 +18,12 @@ sortOrder: 1
     2.  Update `wip.md` with new task information, including a timestamped entry (format: YYYY-MM-DD)
     3.  Complete the task as instructed
     4.  Report back to the user with results (findings or completion status)
-    5.  Ask for explicit permission to commit and push changes (user needs to test the live project)
-    6.  After receiving permission, commit and push the changes
-    7.  Monitor the triggered build and verify it completes successfully
-    8.  Only after successful build completion, return to the user to ask for permission to check off the task in `wip.md`
-    9.  Ensure all updates include timestamps going forward
+    5.  Ask for explicit permission to commit and push changes
+    6.  After receiving permission, commit and push the changes immediately (required for GitHub Pages testing)
+    7.  Monitor the triggered build and verify it completes successfully using the Active Polling Loop
+    8.  User tests the live site; upon approval, ask permission to check off the task in `wip.md`
+    9.  Commit the `wip.md` update locally (no immediate push needed; it will be pushed with the next work cycle)
+    10. Ensure all updates include timestamps going forward
 
 ## 2. GitHub Interaction Protocols
 

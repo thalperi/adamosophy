@@ -77,6 +77,29 @@ const docItems = await getDocs();
   </ul>
 </div>
 
+<!-- Dark Mode Toggle - Tweak Component -->
+<div class="sidebar-section sidebar-tweak-section">
+  <div class="tweak-component">
+    <label class="tweak-label" for="theme-toggle">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+      <span>Dark Mode</span>
+    </label>
+    <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <span class="toggle-indicator"></span>
+    </button>
+  </div>
+</div>
+
 <script>
   // Accordion functionality
   document.querySelectorAll('.accordion-toggle').forEach(toggle => {
@@ -274,6 +297,36 @@ const docItems = await getDocs();
         statusEl.textContent = 'Error';
       }
     });
+  });
+
+  // Dark Mode Toggle Functionality
+  const themeToggle = document.getElementById('theme-toggle');
+  const htmlElement = document.documentElement;
+  
+  // Check for saved theme preference or default to system preference
+  const savedTheme = localStorage.getItem('theme');
+  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  
+  // Apply initial theme
+  if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+    htmlElement.setAttribute('data-theme', 'dark');
+    themeToggle.classList.add('active');
+  }
+  
+  // Toggle theme on button click
+  themeToggle.addEventListener('click', () => {
+    const currentTheme = htmlElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    if (newTheme === 'dark') {
+      htmlElement.setAttribute('data-theme', 'dark');
+      themeToggle.classList.add('active');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      htmlElement.removeAttribute('data-theme');
+      themeToggle.classList.remove('active');
+      localStorage.setItem('theme', 'light');
+    }
   });
 </script>
 
@@ -505,5 +558,71 @@ const docItems = await getDocs();
   .save-status {
     font-size: 0.75rem;
     color: var(--color-text-secondary);
+  }
+
+  /* Dark Mode Toggle - Tweak Component Styles */
+  .sidebar-tweak-section {
+    margin-top: var(--space-md);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .tweak-component {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-xs) 0;
+  }
+
+  .tweak-label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    cursor: pointer;
+  }
+
+  .tweak-label svg {
+    flex-shrink: 0;
+    color: var(--color-text-tertiary);
+  }
+
+  .theme-toggle-btn {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    background-color: var(--color-bg-tertiary);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+  }
+
+  .theme-toggle-btn:hover {
+    border-color: var(--color-primary);
+  }
+
+  .theme-toggle-btn.active {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
+  .toggle-indicator {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 16px;
+    height: 16px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .theme-toggle-btn.active .toggle-indicator {
+    transform: translateX(20px);
   }
 </style>
