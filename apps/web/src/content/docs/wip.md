@@ -1,111 +1,107 @@
 ---
 title: "Work in Progress"
-description: "Current development status and upcoming features for the documentation system."
-sidebarOrder: 0
+description: "Current development status and active tasks for the documentation system."
+sortOrder: 0
 draft: false
 ---
 
 # Work in Progress
 
-This document tracks the current state of development for the Adamosophy documentation system.
+This document tracks **actively ongoing** development work for the Adamosophy documentation system.
 
-## Current Focus
+## Stale Information Policy
 
-- [x] Fix navigation routing and 404 errors
-- [x] Unify sidebar styling across layouts
-- [x] Implement drag-and-drop reordering UI (frontend)
-- [x] Add accordion metadata editor UI (frontend)
-- [x] Create API endpoints for updates (backend stubs)
-- [x] Fix build errors in API routes (esbuild parsing issues with `import type`)
-- [x] Implement resizable sidebar with drag handle (default 30% wider at 21rem)
-- [x] Add Card/List toggle view on Docs landing page
-- [x] Create UI architecture documentation (ui.md) inspired by Couchers.org
+**CRITICAL: This document must reflect ONLY what is actively "in progress" NOW.**
+
+### Criteria for Removing Information
+
+Remove content from this document when ANY of these conditions are met:
+
+1. **Completed & Verified**: Task is done, build passed, and user confirmed acceptance
+   - Move historical details to a separate `changelog.md` or archive if needed for reference
+   - Do NOT keep completed checkboxes here as a work log
+
+2. **Abandoned or Deprioritized**: Work was started but stopped without completion
+   - If it might resume soon (within 1-2 sessions), move to a "Paused" section with date paused
+   - If unlikely to resume, remove entirely and document reasoning in `decisions.md`
+
+3. **Superseded**: Approach was changed or solution was replaced
+   - Document the final approach in relevant technical docs (`ui.md`, `settings.md`, etc.)
+   - Remove the abandoned approach from this document
+
+4. **Older Than 3 Sessions**: Any item without updates for 3+ working sessions
+   - Review during session start: Is this still active?
+   - If yes, add fresh timestamp and continue
+   - If no, apply criteria 1-3 above
+
+### Learning Capture Protocol
+
+If you struggled with something and learned important lessons:
+- **Do NOT** leave the struggle narrative in `wip.md`
+- **DO** document key learnings in:
+  - `decisions.md` for architectural choices
+  - `agent.md` for operational lessons
+  - Inline code comments for implementation specifics
+- Then remove the entire episode from `wip.md`
+
+**Remember**: `wip.md` is a current status dashboard, NOT a project diary, changelog, or work log.
+
+---
+
+## Currently Active Tasks
+
+Tasks being worked on in the current session:
+
 - [ ] Implement GitHub integration for actual file updates
+  - Install `octokit` and `gray-matter` packages
+  - Update API endpoints to commit/push changes back to repo
+  - Test end-to-end workflow with build verification
+
 - [ ] Add image upload and optimization logic
-- [x] Fix MD viewer nested list indentation (all list items appear left-aligned instead of hierarchically indented)
-  - **Completed**: 2026-04-14 - Implemented modular Markdown renderer using marked + github-markdown-css
-  - **Build**: Run #91 passed successfully
-- [ ] Implement 3 Markdown rendering options with user preference setting
-  - [x] Option 1: marked + github-markdown-css (DEFAULT - Completed 2026-04-14)
-  - [ ] Option 2: remark / rehype ecosystem solution
+  - Implement file storage in `/api/upload-image`
+  - Add automatic resizing to optimal dimensions (400x250px for cards)
+  - Convert images to WebP format
+  - Store optimized images in `/public/docs/images/`
+
+- [ ] Implement remaining Markdown rendering options
+  - [ ] Option 2: remark/rehype ecosystem solution
   - [ ] Option 3: @tailwindcss/typography with prose class
   - [ ] Add tristate toggle in drawer for renderer selection
   - [ ] Integrate with user settings profile section
 
-### ✅ Phase 1 Complete: MD Viewer Indentation Fixed & Option 1 Implemented
+---
 
-**Build Verification Successful!**
-- **Commit b0522ee** (implementation): Run #91 ✅ SUCCESS
-- **Commit 23d3369** (wip.md update): Run #92 ✅ SUCCESS
+## Recently Completed (Pending Removal)
 
-**Summary of Completed Work:**
-- **Problem Solved**: The MD viewer nested list indentation issue has been fixed. Documents now render with proper hierarchical indentation for nested lists.
-- **Implementation**: Option 1 (marked + github-markdown-css) has been successfully implemented as the default modular Markdown renderer.
-- **Architecture**: The solution is modular and ready for Options 2 and 3 to be added later.
-- **Documentation**: wip.md, agent.md, and settings.md have been updated to reflect the completed tasks with timestamps and build references.
+**These items should be moved to changelog and removed within 1-2 sessions:**
 
-**Next Steps Available:**
-1. Implement Option 2 (remark/rehype ecosystem)
-2. Implement Option 3 (@tailwindcss/typography)
-3. Add the tristate toggle in the drawer for renderer selection
-4. Integrate with user settings profile section
-
-*The trifold Markdown viewing campaign's first phase is complete and live!*
-
-### 2026-01-14: MD Viewer Indentation Issue
-**Problem**: Nested lists in markdown documents aren't showing proper hierarchical indentation. All list items (bulleted or numbered) inside documents appear completely left-aligned instead of being indented according to their nesting level.
-**Root Cause**: CSS applies the same padding to all list levels rather than incrementally increasing indentation for each nesting level.
-**Status**: Pending fix to CSS for nested list styling.
-
-### 2026-01-14: Multiple Markdown Rendering Options
-**Requirement**: Adamosophy will provide 3 optional ways to render Markdown content, allowing users to select their preferred method in the User Settings section of their profile.
-**Implementation Plan**:
-1. **marked + github-markdown-css**: Fast parsing with authentic GitHub-style appearance
-2. **remark / rehype ecosystem**: Advanced processing with Astro integration and plugin extensibility
-3. **@tailwindcss/typography**: Beautiful default styles with perfect Tailwind integration
-**UI**: Initial implementation will use a tristate toggle in the drawer for quick switching between methods.
-**Status**: Documented in settings.md, ready for implementation.
-
-## Roadmap
-
-The following features are currently being implemented to enhance the documentation experience:
-
-### 1. Interactive Sidebar Editing (Accordion & Drag-and-Drop)
-- **Drag-to-Reorder**: A "grab handle" will appear on hover next to each document title in the drawer. Users can drag documents up or down to reorder them. This automatically updates the `sidebarOrder` in the file's frontmatter.
-- **Accordion Metadata Editor**: Hovering over a document reveals a dropdown icon. Clicking it expands the item to show editable frontmatter fields:
-  - **Title**: The display name of the document.
-  - **Description**: A brief summary shown in list views and tooltips.
-  - **Image Path**: A file picker button allows selecting an image from the local device.
+- [x] Fix MD viewer nested list indentation
+  - Completed: 2026-04-14
+  - Implementation: marked + github-markdown-css modular renderer
+  - Build: Run #91 passed
   
-### 2. Automatic Image Handling
-- **Smart Resizing**: When an image is selected via the file picker, it is automatically resized to optimal dimensions (e.g., 400x250px for cards).
-- **Format Optimization**: Images are converted to WebP format for better performance.
-- **Storage**: Optimized images are stored in `/public/docs/images/`, and the frontmatter is updated with the new path.
-
-### 3. Docs Landing Page Views
-- **Toggleable Layouts**: A "Display" button on the `/docs` landing page allows switching between:
-  - **Card View (Default)**: A grid of cards showing title, image (if available), and description.
-  - **List View (Accordion)**: A vertical list where items can be expanded to reveal full descriptions.
-- **Consistent Ordering**: Both views respect the drag-and-drop order established in the sidebar.
-
-### 4. Centralized Styling
-- **Unified Components**: All cards and list items will use a single shared component (`DocCard.astro`) to ensure identical styling across the sidebar, landing page, and any other listings.
-- **CSS Grid**: The document list in the drawer and the landing page will utilize CSS Grid for responsive, consistent layout.
-
-### 5. Resizable Sidebar
-- **Default Width**: Increased from 16rem to 21rem (30% wider) for better readability
-- **Resize Handle**: Appears on hover at the right edge of the sidebar with blue highlight
-- **Drag-to-Resize**: Users can drag the handle to adjust sidebar width between 200px-600px
-- **Persistence**: Sidebar width is saved to localStorage and restored on page load
-- **Visual Feedback**: Cursor changes to `ew-resize` when hovering over the handle
-
-## Notes
-
-- **No CMS Yet**: These features provide a lightweight editing interface directly in the sidebar, delaying the need for a full Headless CMS until the documentation volume increases.
-- **GitHub Integration**: Changes made via the UI (reordering, metadata edits) will commit directly to the `main` branch using the provided PAT, triggering automatic rebuilds.
-- **UI Architecture**: Documentation system design is inspired by Couchers.org's clean, component-driven approach with emphasis on usability and accessibility.
-- **Build Fixes**: Resolved esbuild parsing errors in API routes by removing frontmatter delimiters and changing `import type` to `import` statements.
+*(Note: Once changelog.md exists, move this there and delete from wip.md)*
 
 ---
 
-*Last Updated: 2026-01-14 - Session including resizable sidebar, card/list toggle, UI documentation, build fixes, and MD viewer nested list indentation issue documented.*
+## Paused Items
+
+**Items temporarily on hold with intent to resume:**
+
+*None currently*
+
+---
+
+## Notes & Context
+
+Reference information for active tasks:
+
+- **GitHub Integration**: Changes made via UI (reordering, metadata edits) will commit directly to `main` branch using PAT, triggering automatic rebuilds
+- **Image Handling**: Smart resizing and WebP conversion for performance optimization
+- **Markdown Rendering**: Three optional rendering methods with user preference stored in settings
+- **Build Verification**: All commits must pass GitHub Actions build before task completion confirmation
+
+---
+
+*Last Updated: 2026-01-14*
+*Next Review: Beginning of next session - apply stale information criteria*
